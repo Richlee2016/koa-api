@@ -1,60 +1,48 @@
-import install from 'superagent-charset';
-import request from 'superagent';
-import cheerio from 'cheerio';
-import fs from 'fs';
-import config from "./config"
-import { movieParse } from './handle'
-import { rq } from '../utils'
+import fs from "fs";
+// 配置
+import config from "./config";
+// 请求封装
+import { reqPromise, reqSuperAgent } from "../utils";
+// 电影dom解析
+import { movieParse } from "./handle";
 
-const { reqUrl, reqApi } = config
-
-const superagent = install(request);
+const { reqUrl, reqApi } = config;
 
 class MovieCrawler {
-    constructor() {
-        this.pageMap = new Map();
+  constructor() {
+    this.pageMap = new Map();
+  }
+
+  // 爬去单个电影
+  async movie(id) {
+    const $ = await reqSuperAgent(reqUrl.movie(id));
+    const res = movieParse($, id);
+    return res;
+  }
+
+  // 多电影爬取
+  async moreMovie(max, min) {
+    let moreArr = [];
+    for (var i = min + 1; i <= max; i++) {
+      moreArr.push(reqSuperAgent(reqUrl.movie(i)));
     }
-
-    // 请求promise化
-    async request(url) {
-        return new Promise((resolve, reject) => {
-            superagent.get(url).charset('gb2312').end(function (err, res) {
-                if (err) {
-                    reject(err);
-                }
-                if (res) {
-                    var $ = cheerio.load(res.text, { decodeEntities: false });
-                    resolve($);
-                };
-            });
-        })
+    try {
+      const domS = await Promise.all(moreArr);
+      const moreRes = domS.map((o, i) => movieParse(o, min + i + 1));
+      console.log(`爬取(${min + 1}~${max})最新电影成功`);
+      return moreRes;
+    } catch (error) {
+      console.log("爬取最新电影失败");
     }
+  }
 
-    // 爬去电影
-    async movie(id) {
-        // 多网页爬取
-        // let listArr = [];
-        // for (var i = 0; i < 20; i++) {
-        //     listArr.push(this.request(config.movie(id+i)));
-        // }
-        // const $ =await Promise.all(listArr);
-        // const res = $.map((o,i) => movieParse(o,id+i));
-
-        const $ = await this.request(reqUrl.movie(id))
-        const res = movieParse($, id);
-        return res;
-    }
-
-    // 首页爬取
-    async page() {
-        
-        const data = await rq({
-            url: reqApi.index
-        })
-        return data;
-    }
-
+  // 单页爬取
+  async page() {
+    const data = await reqPromise({
+      url: reqApi[0].api
+    });
+    return data;
+  }
 }
 
 export default new MovieCrawler();
-

@@ -1,18 +1,23 @@
 import { controller, all, post, get } from "../decorator/router";
-import { MovieCrawler } from "../crawler"
+import {movieCrawlerApi} from "../api"
+
 @controller("/crawler")
 export class Crawler {
   constructor() { }
 
   @get("/movie_home")
   async crawlerMovie(ctx, next) {
-    const html = await MovieCrawler.movie(2);
-    ctx.body = html;
+    const res = await movieCrawlerApi.movie();
+    ctx.body = {
+      code:1,
+      data:res
+    };
   }
 
-  @get("/movie_index")
+  @get("/movie_page")
   async crawlerMoveIndex(ctx,next){
-    const res = await MovieCrawler.page();
+    const res = await movieCrawlerApi.page();
     ctx.body = res;
   }
+  
 }

@@ -3,6 +3,7 @@ export const movieParse = ($, num) => {
 
     if ($('#main').get().length === 0) {
         return Promise.resolve({
+            _id:num + 'none',
             id: num,
             name: 'none'
         });
