@@ -5,7 +5,6 @@ import { Nuxt, Builder } from "nuxt";
 let config = require("../nuxt.config.js");
 config.dev = !(process.env === "production");
 
-
 const host = process.env.HOST || "localhost";
 const port = process.env.PORT || 3000;
 const MIDDLEWARES = ["general","database","router"];

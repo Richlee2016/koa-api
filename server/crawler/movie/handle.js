@@ -2,20 +2,20 @@ export const movieParse = ($, num) => {
     var main = $('#main');
 
     if ($('#main').get().length === 0) {
-        return Promise.resolve({
-            _id:num + 'none',
+        return {
+            _id:num,
             id: num,
             name: 'none'
-        });
+        };
     };
 
     let isMovieSubject = main.find('.location a').get().map(o => $(o).text())[2];
     if (isMovieSubject === '电影专题') {
         console.log(num + ':电影专题');
-        return Promise.resolve({
+        return {
             id: num,
             name: 'subject'
-        })
+        }
     };
 
     var info = $('.info ul li');
@@ -89,6 +89,10 @@ export const movieParse = ($, num) => {
 
     //解析
     var myInfo = getInfo();
+    let imgSrc = main.find('.pic img').attr('original');
+    if(!imgSrc){
+        imgSrc = main.find('.pic img').attr('src');
+    };
     var mymovie = {
         _id:num,
         id: num,
@@ -97,7 +101,7 @@ export const movieParse = ($, num) => {
         score: 0,
         area: myInfo.area,
         othername: myInfo.othername,
-        img: main.find('.pic img').attr('src'),
+        img: imgSrc,
         imdb: myInfo.imdb,
         isFinish: myInfo.isFinish,
         classify: myInfo.classify,

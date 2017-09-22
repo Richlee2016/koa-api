@@ -41,6 +41,7 @@ class MovieCrawler {
     const data = await reqPromise({
       url: reqApi[0].api
     });
+    console.log(data);
     return data;
   }
 }

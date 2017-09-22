@@ -1,3 +1,3 @@
 import * as movieCrawlerApi from "./crawler/movie";
-
-export { movieCrawlerApi };
+import * as movieApi from "./movie";
+export { movieCrawlerApi, movieApi };
