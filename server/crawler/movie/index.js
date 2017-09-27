@@ -4,7 +4,7 @@ import config from "./config";
 // 请求封装
 import { reqPromise, reqSuperAgent } from "../utils";
 // 电影dom解析
-import { movieParse } from "./handle";
+import * as handle from "./handle";
 
 const { reqUrl, reqApi } = config;
 
@@ -16,7 +16,7 @@ class MovieCrawler {
   // 爬去单个电影
   async movie(id) {
     const $ = await reqSuperAgent(reqUrl.movie(id));
-    const res = movieParse($, id);
+    const res = handle.movieParse($, id);
     return res;
   }
 
@@ -28,7 +28,7 @@ class MovieCrawler {
     }
     try {
       const domS = await Promise.all(moreArr);
-      const moreRes = domS.map((o, i) => movieParse(o, min + i + 1));
+      const moreRes = domS.map((o, i) => handle.movieParse(o, min + i + 1));
       console.log(`爬取(${min + 1}~${max})最新电影成功`);
       return moreRes;
     } catch (error) {
@@ -43,6 +43,14 @@ class MovieCrawler {
     });
     console.log(data);
     return data;
+  }
+
+  async bili(s){
+    const html=await reqPromise({
+      url:reqUrl.bili(s)
+    })
+    const res =handle.biliParse(html);
+    return res;
   }
 }
 

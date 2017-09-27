@@ -1,7 +1,7 @@
 import Router from "koa-router";
 import glob from "glob";
 import { resolve } from "path";
-import _ from "lodash";
+import _ from "lodash"
 
 export let routersMap = new Map();
 export const symbolPrefix = Symbol("prefix");
@@ -21,6 +21,7 @@ export class Route {
       const url = target[symbolPrefix] +path;
       const controllers = isArray(controller);
       this.router[method](url,...controllers);
+      // console.log(method,url);
     };
     this.app.use(this.router.routes());
     this.app.use(this.router.allowedMethods());

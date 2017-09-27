@@ -1,3 +1,4 @@
+import cheerio from 'cheerio'
 export const movieParse = ($, num) => {
     var main = $('#main');
 
@@ -113,3 +114,28 @@ export const movieParse = ($, num) => {
     }
     return mymovie;
 }
+
+export const biliParse = html => {
+    const $ = cheerio.load(html);
+    const box = $(".ajax-render li").get();
+    const list = box.map((o,i) => {
+        const domA = $(o).find('a')
+        const tags = $(o).find(".tags span")
+        const up = tags.eq(4)
+        return {
+            id:i+1,
+            href:domA.attr('href'),
+            title:domA.attr('title'),
+            img:$(o).find("img").attr('src') + 'sdf',
+            // time:$(o).find(".so-imgTag_rb").text(),
+            // playTime:tags.eq(1).text(),
+            // upTime:tags.eq(3).text(),
+            // upZhu:{
+            //     name:up.find('a').text(),
+            //     link:up.find('a').attr('href')
+            // },
+        }
+    })
+    return list;
+}
+

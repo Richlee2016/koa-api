@@ -32,7 +32,7 @@ export const page = async () => {
 // 查询电影列表
 export const movieList = async p => {
   const page = Number(p.page) || 1;
-  const size = p.size || 21;
+  const size = Number(p.size) || 21;
   const catalog = p.catalog;
   const classify = p.classify;
   const area = p.area;

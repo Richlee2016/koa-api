@@ -7,12 +7,17 @@ import glob from 'glob'
 const models = resolve(__dirname, "../database/schema/");
 const r = path => resolve(__dirname, "../database/backup/", path);
 
-glob.sync(resolve(models,"./**/*.js")).forEach(require)
+glob.sync(resolve(models,"./**/*.js")).forEach(o => {
+  // console.log(o);
+  require(o);
+});
 
 module.exports = app => {
   mongoose.set("debug", true);
-  mongoose.connect(config.db);
-
+  mongoose.Promise = global.Promise; 
+  mongoose.connect(config.db, {
+    useMongoClient: true,
+  });
   mongoose.connection.on("disconnected", () => {
     mongoose.connect(config.db);
   });

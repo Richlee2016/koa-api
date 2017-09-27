@@ -2,6 +2,7 @@ const baseUrl = "http://www.idyjy.com"
 export default{
     reqUrl:{
         movie: id => `${baseUrl}/sub/${id}.html`,
+        bili:s => `https://search.bilibili.com/all?keyword=${s}&from_source=banner_search`
     },
     reqApi: [{
         name: "index",

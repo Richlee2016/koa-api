@@ -3,6 +3,13 @@ import { MovieCrawler } from "../../crawler"
 const Movie = mongoose.model("t_movie_home");
 const Page = mongoose.model("t_movie_page");
 
+export const one = async () => {
+    console.log(0);
+    const res =await Movie.findOne({id:2});
+    console.log(res);
+    return res;
+}
+
 // 更新最新电影
 export const movie = async (newestId) => {
     // const more =await MovieCrawler.movie(24004);

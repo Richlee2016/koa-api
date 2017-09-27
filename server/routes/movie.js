@@ -3,7 +3,7 @@ import { movieApi } from "../api";
 @controller("/movie_api")
 export class Crawler {
   constructor() {}
-
+  
   @get("/list")
   async getMovieList(ctx, next) {
     const p = ctx.query;
