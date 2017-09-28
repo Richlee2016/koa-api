@@ -118,22 +118,25 @@ export const movieParse = ($, num) => {
 export const biliParse = html => {
     const $ = cheerio.load(html);
     const box = $(".ajax-render li").get();
+    const hrefReg = /(av\d+)/g;
+    const upNameReg = /(\d+)/g;
+    const trimReg = str => str.replace(/(\n)|(\t)/,"").trim();
     const list = box.map((o,i) => {
         const domA = $(o).find('a')
         const tags = $(o).find(".tags span")
-        const up = tags.eq(4)
+        const up = tags.eq(3)
         return {
             id:i+1,
-            href:domA.attr('href'),
-            title:domA.attr('title'),
-            img:$(o).find("img").attr('src') + 'sdf',
-            // time:$(o).find(".so-imgTag_rb").text(),
-            // playTime:tags.eq(1).text(),
-            // upTime:tags.eq(3).text(),
-            // upZhu:{
-            //     name:up.find('a').text(),
-            //     link:up.find('a').attr('href')
-            // },
+            av:domA.attr('href').match(hrefReg)[0],
+            title:domA.attr('title').trim(),
+            img:$(o).find("img").attr('data-src'),
+            time:trimReg($(o).find(".so-imgTag_rb").text()),
+            playTime:trimReg(tags.eq(1).text()),
+            upTime:trimReg(tags.eq(2).text()),
+            upZhu:{
+                name:up.find('a').text(),
+                id:up.find('a').attr('href').match(upNameReg)[0]
+            },
         }
     })
     return list;

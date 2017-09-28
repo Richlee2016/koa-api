@@ -46,6 +46,7 @@ class MovieCrawler {
   }
 
   async bili(s){
+    s = encodeURIComponent(s);
     const html=await reqPromise({
       url:reqUrl.bili(s)
     })

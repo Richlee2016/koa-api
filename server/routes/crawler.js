@@ -34,6 +34,7 @@ export class Crawler {
     const res = await movieCrawlerApi.page();
     ctx.body = res;
   }
+
   // bilibili 搜索
   @get("/movie_bili")
   async crawlerMovieBili(ctx,next){
@@ -41,6 +42,7 @@ export class Crawler {
     const res = await MovieCrawler.bili(s);
     ctx.body = res;
   }
+
   // 免费书城搜索
   @get("/book_search")
   async crawlerBookSearch(ctx, next) {

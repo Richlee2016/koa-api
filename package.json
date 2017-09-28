@@ -4,6 +4,7 @@
   "description": "koa/phantom/es6、7",
   "main": "app.js",
   "scripts": {
+    "start": "gulp --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
