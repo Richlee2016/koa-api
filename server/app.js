@@ -4,7 +4,7 @@ const r = (...arg) => resolve(__dirname, ...arg);
 const MIDDLEWARES = ["database","general", "router"];
 
 const host = process.env.HOST || "localhost";
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3006;
 
 class App {
   constructor() {

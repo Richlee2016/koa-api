@@ -35,18 +35,30 @@ export class Crawler {
     ctx.body = res;
   }
 
+  
   // bilibili 搜索
   @get("/movie_bili")
   async crawlerMovieBili(ctx,next){
     const s = ctx.query.search;
     const res = await MovieCrawler.bili(s);
-    ctx.body = res;
+    if(res){
+      ctx.body={
+        code:1,
+        data:res
+      }
+    }else{
+      ctx.body={
+        code:0,
+        data:res
+      }
+    }
   }
 
   // 免费书城搜索
-  @get("/book_search")
+  @post("/book_search")
   async crawlerBookSearch(ctx, next) {
-    const res = await BookCrawler.search({ name: "一念永恒", author: "耳根" });
+    const {name,author} = ctx.request.body;
+    const res = await BookCrawler.search({ name, author});
     readNow = res;
     ctx.body = res;
   }
