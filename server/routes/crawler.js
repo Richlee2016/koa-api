@@ -1,19 +1,10 @@
-import { controller, all, post, get } from "../decorator/router";
-import { movieCrawlerApi } from "../api";
+import { controller, all, post, get,sayError } from "../decorator/router";
+import { movieCrawlerApi,bookCrawlerApi } from "../api";
 import { BookCrawler,MovieCrawler } from "../crawler";
-
-let readNow = {
-  book: {
-    name: "一念永恒",
-    href: "http://www.23us.cc/html/143/143021/",
-    author: "耳根"
-  }
-};
 
 @controller("/crawler")
 export class Crawler {
   constructor() {}
-
   @get("/one")
   async one(ctx,next){
     const res =await movieCrawlerApi.one();
@@ -32,10 +23,13 @@ export class Crawler {
   @get("/movie_page")
   async crawlerMoveIndex(ctx, next) {
     const res = await movieCrawlerApi.page();
-    ctx.body = res;
+    if (res) {
+      ctx.body = sayError(1, `首页抓取成功`, { data: res });
+    } else {
+      ctx.body = sayError(0, `首页抓取失败`, { data: "" });
+    }
   }
 
-  
   // bilibili 搜索
   @get("/movie_bili")
   async crawlerMovieBili(ctx,next){
@@ -54,14 +48,19 @@ export class Crawler {
     }
   }
 
+
   // 免费书城搜索
   @post("/book_search")
   async crawlerBookSearch(ctx, next) {
-    const {name,author} = ctx.request.body;
-    const res = await BookCrawler.search({ name, author});
-    readNow = res;
-    ctx.body = res;
+    const {name,author,id} = ctx.request.body;
+    const res = await bookCrawlerApi.saveFreeBook(name,author,id);
+    if(res){
+      ctx.body = sayError(1,`${name}免费资源`,{data:res});
+    }else{
+      ctx.body = sayError(0,`无${name}免费资源`,{data:""});
+    };
   }
+  
   // 免费书籍阅读
   @get("/book_read/:id")
   async crawlerBookRead(ctx, next) {

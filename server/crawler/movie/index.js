@@ -38,11 +38,14 @@ class MovieCrawler {
 
   // 单页爬取
   async page() {
-    const data = await reqPromise({
-      url: reqApi[0].api
-    });
-    console.log(data);
-    return data;
+    try {
+      const data = await reqPromise({
+        url: reqApi[0].api
+      });
+      return data;
+    } catch (error) {
+      console.log("首页爬取出错!",error);
+    }
   }
 
   async bili(s){

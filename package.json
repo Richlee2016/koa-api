@@ -27,12 +27,15 @@
     "koa-logger": "^3.0.1",
     "koa-onerror": "^3.1.0",
     "koa-router": "^7.2.1",
+    "koa-session": "^5.5.0",
+    "koa-session2": "^2.2.5",
     "mongoose": "^4.11.13",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "require-dir": "^0.3.2",
     "superagent": "^3.6.0",
-    "superagent-charset": "^1.2.0"
+    "superagent-charset": "^1.2.0",
+    "tinytime": "^0.2.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

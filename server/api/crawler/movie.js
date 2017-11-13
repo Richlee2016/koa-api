@@ -12,17 +12,12 @@ export const one = async () => {
 
 // 更新最新电影
 export const movie = async (newestId) => {
-    // const more =await MovieCrawler.movie(24004);
-    // console.log(more);
-    // return more;
-
     const page = await Page.findOne({name:'index'});
     if(page){
         const {list:{banner}} = page;
         let maxId = Math.max.apply(Math,banner.map(o => Number(o.id)));
         const maxCount =await Movie.count({}).exec();
         // 如果选取的id大于了首页的最大值  并且这个id能够爬取到值
-        console.log(newestId,maxId,maxCount);
         if(newestId&&newestId>maxId){
             const newestMovie = await MovieCrawler.movie(newestId);
             if(newestMovie.name !== 'none'){
@@ -37,8 +32,7 @@ export const movie = async (newestId) => {
                 const insert =Movie.insertMany(more);
                 console.log("最新电影更新成功");
             } catch (error) {
-                console.log("最新电影更新失败");
-                console.log(error);
+                console.log("最新电影更新失败",error);
             }
             return more;
         }else{

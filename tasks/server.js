@@ -9,7 +9,7 @@ gulp.task('serve',(cb)=>{
   var server = liveserver.new(['--harmony','start']);
   server.start();
 
-  gulp.watch(['server/controller/**/*.js','server/app.js','server/routes/**/*.js','server/crawler/**/*.js','server/middleware/**/*.js'],function(){
+  gulp.watch(['server/controller/**/*.js','server/api/**/*.js','server/app.js','server/routes/**/*.js','server/crawler/**/*.js','server/middleware/**/*.js'],function(){
     server.start.bind(server)()
   });
 })

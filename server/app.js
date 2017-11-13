@@ -3,8 +3,8 @@ import { resolve } from "path";
 const r = (...arg) => resolve(__dirname, ...arg);
 const MIDDLEWARES = ["database","general", "router"];
 
-const host = process.env.HOST || "localhost";
-const port = process.env.PORT || 3006;
+const host = process.env.HOST || "192.168.2.116";
+const port = process.env.PORT || 8080;
 
 class App {
   constructor() {
