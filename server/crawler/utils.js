@@ -5,7 +5,6 @@ import reqSuper from 'superagent';
 import cheerio from 'cheerio';
 const superagent = install(reqSuper);
 
-
 export const writeFileAsync = (src, data) => {
   return new Promise((resolve, reject) => {
     writeFile(src, data, function (err, res) {
@@ -47,3 +46,4 @@ export const reqSuperAgent = async (url) => {
       });
   })
 }
+

@@ -1,4 +1,4 @@
-import { controller, all, post, get, sayError } from "../decorator/router";
+import { controller, all, post, get, del, sayError } from "../decorator/router";
 import { bookApi, oauthApi } from "../api";
 import Oauth from "../oauth";
 import qs from "querystring";
@@ -6,9 +6,8 @@ const oauthTest = new Oauth();
 @controller("/oauth")
 export class OauthSet {
   constructor() {}
-
   @get("/qq")
-  async qq(ctx, next) {
+  async fetchQQ(ctx, next) {
     const { code, state } = ctx.query;
     const token = await oauthTest.fetchAccessToken(code);
     const { access_token } = qs.parse(token);
@@ -21,37 +20,45 @@ export class OauthSet {
     ctx.body = oauthTest.redirectUrl(`${state}#${openid}`);
   }
 
-  @get("/test")
-  async test(ctx, next) {
-    ctx.session.user = {
-      id: 2
-    };
-    // console.log(ctx.session)
-    // console.log(ctx.session.openid);
-    ctx.body = 0;
-  }
-
-  @get("/login")
-  async login(ctx, next) {
-    const { openid } = ctx.query;
+  @get("/users/:openid")
+  async getUserId(ctx, next) {
+    console.log(openid);
+    let { openid } = ctx.params;
     const sessionOauth = ctx.session.oauth;
+    if (openid === "no") {
+      openid = "";
+    }
     let user;
     if (openid && !sessionOauth) {
-      ctx.session.oauth = openid ;
+      ctx.session.oauth = openid;
       user = await oauthApi.fetchUser(openid);
     } else {
       user = await oauthApi.fetchUser(sessionOauth);
     }
-    if(user){
-      ctx.body = sayError(1,"登录成功",{data:user.qqInfo});
-    }else{
-      ctx.body = sayError(0,"登录失败",{data:""});
-    };
+    if (user) {
+      ctx.body = sayError(1, "登录成功", { data: user.qqInfo });
+    } else {
+      ctx.body = sayError(0, "登录失败", { data: "" });
+    }
   }
-  @get("/logout")
-  async logout(ctx, next) {
+
+  @del("/users")
+  async delUser(ctx, next) {
     ctx.session = null;
-    ctx.body = sayError(1,"登出成功",{data:""});
-    
+    ctx.body = sayError(1, "登出成功", { data: "" });
+  }
+
+  @get("/users")
+  async getUsers(ctx, next) {
+    const { page, size } = ctx.query;
+    const res = await oauthApi.fetchUsers(page, size);
+    if (res && res.length <= 0) {
+      ctx.body = sayError(2, "没有用户", { data: [] });
+    }
+    if (res) {
+      ctx.body = sayError(1, "获取成功", { data: res });
+    } else {
+      ctx.body = sayError(0, "获取失败", { data: "" });
+    }
   }
 }

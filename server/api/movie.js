@@ -61,8 +61,8 @@ export const movieList = async p => {
       .skip(skip)
       .exec();
     return {
-      list:movielist,
-      count:counts
+      list: movielist,
+      count: counts
     };
   } catch (error) {
     console.log("列表查询错误");

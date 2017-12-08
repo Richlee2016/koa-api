@@ -1,4 +1,5 @@
 const baseUrl = "http://www.idyjy.com"
+// const pan_baseUrl = ""
 export default{
     reqUrl:{
         movie: id => `${baseUrl}/sub/${id}.html`,

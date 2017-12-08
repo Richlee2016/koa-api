@@ -3,4 +3,5 @@ import * as bookCrawlerApi from "./crawler/book";
 import * as movieApi from "./movie";
 import * as bookApi from "./book";
 import * as oauthApi from "./oauth";
-export { movieCrawlerApi, bookCrawlerApi, movieApi, oauthApi, };
+import * as onlineApi from "./online";
+export { movieCrawlerApi, bookCrawlerApi, movieApi, oauthApi, onlineApi };

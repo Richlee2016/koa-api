@@ -71,4 +71,10 @@ export class Crawler {
       ctx.body = res;
     }
   }
+
+  @get("/panda_transfer")
+  async pandaTransfer(ctx,next){
+    const res = await movieCrawlerApi.transfer();
+    ctx.body = res;
+  }
 }

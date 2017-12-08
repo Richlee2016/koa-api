@@ -73,6 +73,30 @@ export const all = path =>
   });
 
 export const sayError = (code, message, mixin) => {
-    if (message) console.log(message);
-    return Object.assign({}, { code, message }, mixin);
+  if (message) console.log(message);
+  return Object.assign({}, { code, message }, mixin);
+};
+
+export const state = (code, message, mixin) => {
+  let msg = message;
+  switch (code) {
+    case 200: //[GET]服务器成功返回用户请求的数据
+      msg = "OK";
+      break;
+    case 201: //[POST/PUT/PATCH]：用户新建或修改数据成功。
+      msg = "CREATED";
+      break;
+    case 204: //[DELETE]：用户删除数据成功。
+      msg = "NO CONTENT";
+      break;
+    case 400: // [POST/PUT/PATCH]：用户发出的请求有错误，服务器没有进行新建或修改数据的操作
+      msg = "INVALID REQUEST";
+      break;
+    case 401: // [*]：表示用户没有权限（令牌、用户名、密码错误）
+      msg = "Unauthorized";
+      break;
+      case 403: // [*]：表示用户没有权限（令牌、用户名、密码错误）
+      msg = "Forbidden";
+      break; 
+  }
 };

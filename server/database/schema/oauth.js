@@ -4,6 +4,10 @@ const Mixed = Schema.Types.Mixed;
 const OauthSchema = new Schema({
   openid: String,
   qqInfo: Object,
+  limit:{ //权限系统  1~100  100最高权限(在下 Rich Lee 有何贵干！ (￣_,￣ ) )
+    type:Number,
+    default:1
+  },
   meta: {
     createAt: {
       type: Date,

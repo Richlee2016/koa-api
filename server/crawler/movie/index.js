@@ -2,16 +2,14 @@ import fs from "fs";
 // 配置
 import config from "./config";
 // 请求封装
-import { reqPromise, reqSuperAgent } from "../utils";
+import { reqPromise, reqSuperAgent, Graphql } from "../utils";
 // 电影dom解析
 import * as handle from "./handle";
-
+import md5 from 'md5'
 const { reqUrl, reqApi } = config;
 
 class MovieCrawler {
-  constructor() {
-    this.pageMap = new Map();
-  }
+  constructor() {}
 
   // 爬去单个电影
   async movie(id) {
@@ -44,17 +42,33 @@ class MovieCrawler {
       });
       return data;
     } catch (error) {
-      console.log("首页爬取出错!",error);
+      console.log("首页爬取出错!", error);
     }
   }
 
-  async bili(s){
+  async bili(s) {
     s = encodeURIComponent(s);
-    const html=await reqPromise({
-      url:reqUrl.bili(s)
-    })
-    const res =handle.biliParse(html);
+    const html = await reqPromise({
+      url: reqUrl.bili(s)
+    });
+    const res = handle.biliParse(html);
     return res;
+  }
+  
+  async transfer(id,query) {
+    const key = "44e9bd3958-ZjM0Y2VjOW";
+    const secret = "M0NGU5YmQzOTU4OT-96596065ccf34ce";
+    const timestamp = Math.floor(Date.now() / 1000);
+    const sign = md5(key + timestamp + secret);
+    console.log(timestamp);
+    try {
+      const res = await reqPromise({
+        uri: `http://graphql.shenjian.io/?user_key=${key}&timestamp=${timestamp}&sign=${sign}&source_id=${id}&query=${query}`
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
